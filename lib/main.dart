@@ -1,20 +1,18 @@
-import 'dart:ffi';
-import 'dart:ui';
-
 import 'package:clubsma/Meilleurs_choix.dart';
 import 'package:clubsma/five_stars.dart';
 import 'package:clubsma/nave_bar.dart';
 import 'package:clubsma/pass_item.dart';
 import 'package:clubsma/salle_item.dart';
 import 'package:clubsma/sport_item.dart';
+import 'package:clubsma/tabs_screen.dart';
 import 'package:clubsma/titre.dart';
 import 'package:clubsma/ville.dart';
 import 'package:clubsma/ville_api.dart';
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
+import 'package:clubsma/welcome_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'my-global.dart' as global;
 
 void main() {
   runApp(MyApp());
@@ -30,7 +28,15 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
           accentColor: Colors.amber,
           fontFamily: 'Poppin'),
-      home: MyHomePage(),
+      home: WelcomePage(),
+      routes: {
+        TabsScreen.routeName: (ctx) => TabsScreen(),
+      },
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (ctx) => MyHomePage(),
+        );
+      },
     );
   }
 }
@@ -44,6 +50,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _typeAheadController = TextEditingController();
+  final selectVille = 'Marrakech';
 
   @override
   Widget build(BuildContext context) {
@@ -64,33 +71,35 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: TypeAheadField<Ville?>(
                         debounceDuration: Duration(microseconds: 500),
                         textFieldConfiguration: TextFieldConfiguration(
-                            //controller:  typeAheadController,
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.location_on,
-                                color: Colors.red,
-                                size: 18,
-                              ),
-                              hintText: ('Marrakech'),
-                              hintStyle: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                  fontFamily: 'PoppinsBold'),
-                              border: InputBorder.none,
+                          //controller:  typeAheadController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.location_on,
+                              color: Colors.red,
+                              size: 18,
                             ),
-                            controller: _typeAheadController),
+                            hintText: ('Marrakech'),
+                            hintStyle: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontFamily: 'PoppinsBold'),
+                            border: InputBorder.none,
+                          ),
+                          controller: _typeAheadController,
+
+                        ),
                         suggestionsCallback: VilleApi.getVilleSuggestions,
                         itemBuilder: (context, Ville? suggestion) {
                           final ville = suggestion!;
                           return ListTile(
                             leading: Icon(
                               Icons.location_on,
-                              size: 10,
+                              size: 16,
                             ),
                             title: Text(
                               ville.name,
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 14,
                                 fontFamily: 'PoppinsBold',
                                 //fontWeight: FontWeight.w900
                               ),
@@ -153,8 +162,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
 
                     Titre(
-                      'Sport disponible sur Marrakech',
+                      'Sport disponible sur ${_typeAheadController.text}',
                       'Voir tout',
+                        '${_typeAheadController.text}',
                     ),
 
                     // Titre('Sport disponible sur Marrakech'),
@@ -185,16 +195,17 @@ class _MyHomePageState extends State<MyHomePage> {
                           ],
                         )),
                     Titre(
-                      'Meilleurs choix sur Marrakech',
+                      'Meilleurs choix sur ${_typeAheadController.text}',
                       '',
+                        '${_typeAheadController.text}'
                     ),
 
                     MeilleursChoix(),
 
-
                     Titre(
-                      'Club et salles de sport à Marrakech',
+                      'Club et salles de sport à ${_typeAheadController.text}',
                       'Voir tout',
+                        '${_typeAheadController.text}'
                     ),
 
                     Container(
@@ -247,8 +258,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Column(
                         children: [
                           Titre(
-                            'Réserver des passes à Marrakech',
+                            'Réserver des passes à ${_typeAheadController.text}',
                             'Voir tout',
+                              '${_typeAheadController.text}',
                           ),
                           Container(
                             width: double.infinity,

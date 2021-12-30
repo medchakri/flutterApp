@@ -1,10 +1,15 @@
+import 'package:clubsma/salle_plus.dart';
+import 'package:clubsma/tabs_screen.dart';
 import 'package:flutter/material.dart';
 
 class Titre extends StatelessWidget {
   final String titre;
   final String voir;
+  final String ville;
+  Titre(this.titre,this.voir,this.ville);
 
-  Titre(this.titre,this.voir);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +34,15 @@ class Titre extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            voir,
-            style: TextStyle(
-              color: Colors.black54,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w900,
+          TextButton(
+            onPressed: () {Navigator.of(context).pushNamed(TabsScreen.routeName);},
+            child: Text(
+              voir,
+              style: TextStyle(
+                color: Colors.black54,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ),
         ],
